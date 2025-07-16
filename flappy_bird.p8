@@ -15,15 +15,22 @@ function _init()
 end
 
 function _update()
-    update_tubes()
-    update_player()
-    check_all_collision()
+    if (not game_over) then
+        update_tubes()
+        update_player()
+        check_all_collision()
+    else
+        if (btnp(4) or btnp(5)) then
+            _init()
+        end
+    end
 end
 
 function _draw()
     cls(-4)
     draw_tubes()
     draw_player()
+    draw_game_over()
 end
 
 -->8
@@ -77,7 +84,6 @@ end
 function draw_player()
     if (game_over) then
         spr(3,p.x,p.y)
-        stop("game over")
     elseif (p.dy>0) then
         spr(1,p.x,p.y)
     else
@@ -132,6 +138,15 @@ function draw_tubes()
 
         tube=tubes[i].btm
         rectfill(tube.x0,tube.y0,tube.x1,tube.y1,3)
+    end
+end
+
+-->8
+function draw_game_over()
+    if (game_over) then
+		print("game over!",44,44,7)
+		--print("your score: "..player.score,34,54,7)
+		print("PRESS ❎ to play again",18,72,6)
     end
 end
 
