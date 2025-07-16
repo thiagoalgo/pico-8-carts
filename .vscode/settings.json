@@ -1,7 +1,10 @@
 {
   "workbench.colorTheme": "PICO-8",
   "editor.fontFamily": "PICO-8 mono upper",
-  "editor.fontSize": 13,
+  "editor.fontSize": 12,
   "editor.fontLigatures": false,
-  "editor.minimap.enabled": false
+  "editor.minimap.enabled": false,
+  "github.copilot.editor.enableAutoCompletions": false,
+  "github.copilot.inlineSuggest.enable": false,
+  "editor.inlineSuggest.enabled": false
 }
