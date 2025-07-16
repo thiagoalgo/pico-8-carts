@@ -59,8 +59,8 @@ function check_all_collision()
         tube_rect={x=tube.x0,y=tube.y0,w=w,h=h}
         
         if (check_colision(player_rect,tube_rect)) then
-            game_over=true
             sfx(1)
+            game_over=true
             break
         end
 
@@ -70,8 +70,8 @@ function check_all_collision()
         tube_rect={x=tube.x0,y=tube.y0,w=w,h=h}
         
         if (check_colision(player_rect,tube_rect)) then
-            game_over=true
             sfx(1)
+            game_over=true
             break
         end
     end
