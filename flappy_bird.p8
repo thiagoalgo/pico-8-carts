@@ -1,8 +1,6 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
--->8
-
 function _init()
     game_over=false
     gravity=0.3
@@ -19,6 +17,7 @@ end
 function _update()
     update_tubes()
     update_player()
+    check_all_collision()
 end
 
 function _draw()
@@ -41,8 +40,49 @@ function update_player()
     p.y+=p.dy
 end
 
+function check_all_collision()
+    player_rect={x=p.x,y=p.y,w=8,h=8}
+    for i=1,#tubes do
+        local tube=tubes[i].top
+        local w = tube.x1-tube.x0
+        local h = tube.y0+tube.y1
+        tube_rect={x=tube.x0,y=tube.y0,w=w,h=h}
+        
+        if (check_colision(player_rect,tube_rect)) then
+            game_over=true
+            break
+        end
+
+        tube=tubes[i].btm
+        w = tube.x1-tube.x0
+        h = tube.y1-tube.y0
+        tube_rect={x=tube.x0,y=tube.y0,w=w,h=h}
+        
+        if (check_colision(player_rect,tube_rect)) then
+            game_over=true
+        end
+    end
+end
+
+function check_colision(player_rect, tube_rect)
+    if (player_rect.x < tube_rect.x+tube_rect.w and
+        player_rect.x+player_rect.w > tube_rect.x and
+        player_rect.y < tube_rect.y+tube_rect.h and
+        player_rect.y+player_rect.h > tube_rect.y) then
+        return true
+    end
+    return false
+end
+
 function draw_player()
-    spr(1, p.x, p.y)
+    if (game_over) then
+        spr(3,p.x,p.y)
+        stop("game over")
+    elseif (p.dy>0) then
+        spr(1,p.x,p.y)
+    else
+        spr(2,p.x,p.y)
+    end
 end
 
 -->8
@@ -61,29 +101,30 @@ function make_tubes()
 end
 
 function update_tubes()
-    for i=1,#tubes do
-        tubes[i].top.x0-=tubes_speed
-        tubes[i].top.x1-=tubes_speed
-        tubes[i].btm.x0-=tubes_speed
-        tubes[i].btm.x1-=tubes_speed
-    end
+    if (not game_over) then
+        for i=1,#tubes do
+            tubes[i].top.x0-=tubes_speed
+            tubes[i].top.x1-=tubes_speed
+            tubes[i].btm.x0-=tubes_speed
+            tubes[i].btm.x1-=tubes_speed
+        end
 
-    -- remove
-    if tubes[1].top.x1 < 0 then
-        del(tubes,tubes[1])
-    end
+        -- remove
+        if tubes[1].top.x1 < 0 then
+            del(tubes,tubes[1])
+        end
 
-    -- Add tube
-    if (frequency_count-tube_width==frequency) then
-        add(tubes,make_tubes())
-        frequency_count=0
-    else
-        frequency_count+=tubes_speed
+        -- Add tube
+        if (frequency_count-tube_width==frequency) then
+            add(tubes,make_tubes())
+            frequency_count=0
+        else
+            frequency_count+=tubes_speed
+        end
     end
 end
 
 function draw_tubes()
-    print(#tubes)
     print(frequency_count)
     for i=1,#tubes do
         local tube=tubes[i].top
@@ -95,11 +136,11 @@ function draw_tubes()
 end
 
 __gfx__
-00000000000aaa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-0000000000aafa700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-007007000afff7170000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00077000a77aaa700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00077000a7aaa9990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-007007000aaa99a90000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000000000aaff9900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000aaa000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000aaa00000aa00000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000aafa7000aff77000008870000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+007007000afff7170af771700008f717000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000a77aaa70a777fa7900877870000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00077000a7aaa999a77ff99900878999000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+007007000aaa99a90aaa99a900088989000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000aaff9900aaff99000000990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000aaa0000aaa00000000800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
