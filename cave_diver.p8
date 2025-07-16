@@ -5,6 +5,7 @@ function _init()
 	game_over=false
 	make_cave()
 	make_player()
+	highscore=load_highscore()
 end
 
 function _update()
@@ -28,6 +29,7 @@ function _draw()
 		print("PRESS ❎ to play again",18,72,6)
 	else
 		print("score: "..player.score,2,2,7)
+		print("highscore: "..highscore,2,120,7)
 	end
 end
 
@@ -66,6 +68,7 @@ function check_hit()
 		if (cave[i+1].top>player.y
 			or cave[i+1].btm<player.y+7) then
 			game_over=true
+			save_highscore()
 			sfx(1)
 		end
 	end
@@ -114,6 +117,22 @@ function draw_cave()
 		line(i-1,0,i-1,cave[i].top,top_colors)
 		line(i-1,127,i-1,cave[i].btm,btm_colors)
 	end
+end
+-->8
+cartdata("highscore")
+
+function save_highscore()
+	local highscore = load_highscore()
+	if (player.score > highscore) then
+		dset(0, player.score)
+	end
+end
+
+function load_highscore()
+	if (dget(0) == nil) then
+		dset(0, 0)
+	end
+	return dget(0)
 end
 __gfx__
 0000000000aaaa0000aaaa0000888800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
