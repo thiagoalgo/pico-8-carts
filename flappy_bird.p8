@@ -142,14 +142,14 @@ function update_tubes()
 end
 
 function draw_tubes()
-    print(frequency_count)
     for i=1,#tubes do
-        local tube=tubes[i].top
-        rectfill(tube.x0,tube.y0,tube.x1,tube.y1,3)
-
-        tube=tubes[i].btm
-        rectfill(tube.x0,tube.y0,tube.x1,tube.y1,3)
+        draw_tube(tubes[i].top)
+        draw_tube(tubes[i].btm)
     end
+end
+
+function draw_tube(tube)
+    rectfill(tube.x0,tube.y0,tube.x1,tube.y1,3)
 end
 
 -->8
