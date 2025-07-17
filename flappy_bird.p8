@@ -31,6 +31,7 @@ function _draw()
     draw_tubes()
     draw_map()
     draw_player()
+    draw_hud()
     draw_game_over()
 end
 
@@ -56,8 +57,7 @@ end
 
 function check_limits()
     if (p.y <= 4 or p.y > 116) then
-        game_over = true
-        sfx(1)
+        set_game_over()
     end
 end
 
@@ -70,8 +70,7 @@ function check_tubes_collisions()
         tube_rect = { x = tube.x0, y = tube.y0, w = w, h = h }
 
         if check_tube_collision(player_rect, tube_rect) then
-            sfx(1)
-            game_over = true
+            set_game_over()
             break
         end
 
@@ -81,8 +80,7 @@ function check_tubes_collisions()
         tube_rect = { x = tube.x0, y = tube.y0, w = w, h = h }
 
         if check_tube_collision(player_rect, tube_rect) then
-            sfx(1)
-            game_over = true
+            set_game_over()
             break
         end
     end
@@ -96,6 +94,11 @@ function check_tube_collision(player_rect, tube_rect)
         return true
     end
     return false
+end
+
+function set_game_over()
+    game_over = true
+    sfx(1)
 end
 
 function draw_player()
@@ -174,6 +177,10 @@ end
 function draw_map()
     map(0, 0, 0, 0, 16, 1)
     map(0, 1, 0, 120, 16, 1)
+end
+
+function draw_hud()
+    print("score: "..p.score,2,6,7)
 end
 
 __gfx__
