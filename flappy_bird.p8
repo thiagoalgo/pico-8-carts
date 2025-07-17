@@ -150,6 +150,8 @@ end
 
 function draw_tube(tube)
     rectfill(tube.x0,tube.y0,tube.x1,tube.y1,3)
+    rect(tube.x0-1,tube.y0-1,tube.x1+1,tube.y1+1,0)
+    rectfill(tube.x0+2,tube.y0+2,tube.x0+4,tube.y1-2,11)
 end
 
 -->8
@@ -157,7 +159,7 @@ function draw_game_over()
     if (game_over) then
 		print("game over!",44,44,7)
 		--print("your score: "..player.score,34,54,7)
-		print("PRESS ❎ to play again",18,72,6)
+		print("press "..chr(151).." to play again",18,72,10)
     end
 end
 
