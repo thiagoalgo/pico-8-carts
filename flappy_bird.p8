@@ -8,7 +8,7 @@ function _init()
     tubes_speed=1
     tube_height=42
     tube_width=13
-    frequency=35
+    frequency=50
     frequency_count=0
     init_tubes()
     init_player()
@@ -60,7 +60,7 @@ function check_all_collision()
     for i=1,#tubes do
         local tube=tubes[i].top
         local w = tube.x1-tube.x0
-        local h = tube.y0+tube.y1
+        local h = tube.y1+tube.y0
         tube_rect={x=tube.x0,y=tube.y0,w=w,h=h}
         
         if (check_colision(player_rect,tube_rect)) then
@@ -132,7 +132,7 @@ function update_tubes()
         end
 
         -- Add tube
-        if (frequency_count-tube_width==frequency) then
+        if (frequency_count>=frequency) then
             add(tubes,make_tubes())
             frequency_count=0
         else
