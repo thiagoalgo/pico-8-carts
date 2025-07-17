@@ -10,6 +10,7 @@ function _init()
     tube_width = 13
     frequency = 50
     frequency_count = 0
+    highscore=0
     init_tubes()
     init_player()
 end
@@ -28,6 +29,7 @@ end
 
 function _draw()
     cls(-4)
+    load_highscore()
     draw_tubes()
     draw_map()
     draw_player()
@@ -99,6 +101,7 @@ end
 function set_game_over()
     game_over = true
     sfx(1)
+    save_highscore()
 end
 
 function draw_player()
@@ -168,7 +171,7 @@ end
 function draw_game_over()
     if game_over then
         print("game over!", 44, 44, 7)
-        --print("your score: "..player.score,34,54,7)
+        print("your score: "..p.score,34,54,7)
         print("press " .. chr(151) .. " to play again", 18, 72, 10)
     end
 end
@@ -181,6 +184,23 @@ end
 
 function draw_hud()
     print("score: "..p.score,2,6,7)
+    print("highscore: "..highscore,2,118,7)
+end
+
+-->8
+cartdata("highscore")
+
+function save_highscore()
+	if (p.score > highscore) then
+		dset(0, p.score)
+	end
+end
+
+function load_highscore()
+	if (dget(0) == nil) then
+		dset(0, 0)
+	end
+	highscore = dget(0)
 end
 
 __gfx__
