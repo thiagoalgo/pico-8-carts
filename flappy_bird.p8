@@ -23,6 +23,8 @@ function _init()
     lvl_score_inc_trigger = 10
     lvl_score_inc = 2
     lvl_score_max = 46
+    shake_frames = 0
+    shake_intensity = 2
     init_tubes()
     init_player()
 end
@@ -115,6 +117,7 @@ function set_game_over()
     game_over = true
     sfx(1)
     save_highscore()
+    shake_frames = 10
 end
 
 function draw_player()
@@ -188,6 +191,18 @@ function draw_game_over()
         print("game over!", 44, 44, 7)
         print("your score: " .. p.score, 34, 54, 7)
         print("press " .. chr(151) .. " to play again", 18, 72, 10)
+        shake()
+    end
+end
+
+function shake()
+    if (shake_frames > 0) then
+        local sx = rnd(shake_intensity) - (shake_intensity / 2)
+        local sy = rnd(shake_intensity) - (shake_intensity / 2)
+        camera(sx, sy)
+        shake_frames -= 1
+    else
+        camera(0, 0)
     end
 end
 
