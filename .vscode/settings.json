@@ -6,5 +6,7 @@
   "editor.minimap.enabled": false,
   "github.copilot.editor.enableAutoCompletions": false,
   "github.copilot.inlineSuggest.enable": false,
-  "editor.inlineSuggest.enabled": false
+  "editor.inlineSuggest.enabled": false,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
 }
