@@ -5,6 +5,8 @@ __lua__
 #include kingdon_8_incs/events_75.lua
 
 function _init()
+    init_scenes()
+    scene = scenes["start_screen"]
     
 end
 
@@ -14,7 +16,30 @@ end
 
 function _draw()
     draw_img(img)
+    print(scene, 10, 10, 7)
     --print(events,10,10,7)
+end
+
+-->8
+function init_scenes()
+    scenes = {
+        start_screen="start_screen",
+        tutorial="tutorial",
+        game_play="game_play",
+        game_over="game_over",
+    }
+end
+
+function draw_scene()
+    if scene == scenes["start_screen"] then
+        print("start screen", 10, 10, 7)
+    elseif scene == scenes["tutorial"] then
+        print("tutorial", 10, 10, 7)
+    elseif scene == scenes["game_play"] then
+        print("game_play", 10, 10, 7)
+    elseif scene == scenes["game_over"] then
+        print("game_over", 10, 10, 7)
+    end
 end
 
 __gfx__
