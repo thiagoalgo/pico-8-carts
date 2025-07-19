@@ -1,6 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
+#include kingdon_8_incs/bg.p8
 #include kingdon_8_incs/events_75.lua
 
 function _init()
@@ -12,7 +13,8 @@ function _update()
 end
 
 function _draw()
-    print(events)
+    draw_img(img)
+    --print(events,10,10,7)
 end
 
 __gfx__
