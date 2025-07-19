@@ -5,10 +5,12 @@ __lua__
 #include events_75.lua
 
 function _init()
+    scenes={}
     init_scenes()
     scene = scenes["game_play"]
-    -- DEBUG
 
+    advisors={}
+    sel_advisor={}
     init_advisors()
 end
 
@@ -23,16 +25,19 @@ end
 
 function init_advisors()
     advisors = {
-        [0] = { name = "cleric" },
-        [1] = { name = "general" },
-        [2] = { name = "sage" },
-        [3] = { name = "merchant" }
+        [0] = { name = "cleric", row = 0, col = 0 },
+        [1] = { name = "general", row = 0, col = 1 },
+        [2] = { name = "sage", row = 1, col = 0 },
+        [3] = { name = "merchant", row = 1, col = 1 }
     }
+
+    sel_advisor = { row = 0, col = 0 }
 end
 
 -->8
 function _update()
     update_scenes()
+    update_advisors()
 end
 
 function update_scenes()
@@ -46,6 +51,15 @@ function update_scenes()
         end
     elseif scene == scenes["game_play"] then
     elseif scene == scenes["game_over"] then
+    end
+end
+
+function update_advisors()
+    if scene == scenes["game_play"] then
+        if btnp(0) then sel_advisor.col = 0 end
+        if btnp(1) then sel_advisor.col = 1 end
+        if btnp(2) then sel_advisor.row = 0 end
+        if btnp(3) then sel_advisor.row = 1 end
     end
 end
 
@@ -70,20 +84,49 @@ function draw_scene()
 end
 
 function draw_advisors()
-    local bg_col = 0
-    local text_col = 7
+    if scene == scenes["game_play"] then
+        local bg_col = 0
+        local text_col = 7
 
-    rectfill(4, 44, 28, 50, bg_col)
-    print(advisors[0]["name"], 5, 45, text_col)
+        if (sel_advisor.row == 0 and sel_advisor.col == 0) then
+            rectfill(4, 44, 28, 50, bg_col)
+            print(advisors[0]["name"], 5, 45, text_col)
+        end
 
-    rectfill(95, 44, 123, 50, bg_col)
-    print(advisors[1]["name"], 96, 45, text_col)
+        if (sel_advisor.row == 0 and sel_advisor.col == 1) then
+            rectfill(95, 44, 123, 50, bg_col)
+            print(advisors[1]["name"], 96, 45, text_col)
+        end
 
-    rectfill(4, 116, 20, 122, bg_col)
-    print(advisors[2]["name"], 5, 117, text_col)
+        if (sel_advisor.row == 01 and sel_advisor.col == 0) then
+            rectfill(4, 116, 20, 122, bg_col)
+            print(advisors[2]["name"], 5, 117, text_col)
+        end
 
-    rectfill(91, 116, 123, 122, bg_col)
-    print(advisors[3]["name"], 92, 117, text_col)
+        if (sel_advisor.row == 1 and sel_advisor.col == 1) then
+            rectfill(91, 116, 123, 122, bg_col)
+            print(advisors[3]["name"], 92, 117, text_col)
+        end
+
+        palt(0, false)
+        palt(3, true)
+        if (sel_advisor.row == 0 and sel_advisor.col == 0) then
+            map(2, 0, 56, 73, 2, 2)
+        end
+
+        if (sel_advisor.row == 0 and sel_advisor.col == 1) then
+            map(0, 0, 56, 73, 2, 2)   
+        end
+
+        if (sel_advisor.row == 01 and sel_advisor.col == 0) then
+            map(2, 0, 56, 95, 2, 2)    
+        end
+
+        if (sel_advisor.row == 1 and sel_advisor.col == 1) then
+            map(0, 0, 56, 95, 2, 2)
+        end
+        palt()
+    end
 end
 
 function draw_score()
@@ -96,7 +139,7 @@ function draw_score()
     rectfill(5, 5, bar_size, 11, get_bar_color(points))
     print("popular.", 6, 6, text_col)
 
-    points = 50
+    points = 1
     bar_size = calc_score_bar_size(47, points)
     rectfill(46, 4, 82, 12, bg_col)
     rectfill(47, 5, bar_size, 11, get_bar_color(points))
@@ -124,9 +167,14 @@ function get_bar_color(points)
 end
 
 __gfx__
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00077000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00077000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00700700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000033333333033333330ffffffffffffff00ffffffffffffff0333333303333333300000000000000000000000000000000000000000000000000000000
+0000000033333333003333330fffffffffffff0330fffffffffffff0333333003333333300000000000000000000000000000000000000000000000000000000
+00700700333333330f0333330ffffffffffff033330ffffffffffff0333330f03333333300000000000000000000000000000000000000000000000000000000
+00077000333333330ff03333000000000fff03333330fff00000000033330ff03333333300000000000000000000000000000000000000000000000000000000
+00077000000000000fff0333333333330ff0333333330ff0333333333330fff00000000000000000000000000000000000000000000000000000000000000000
+007007000ffffffffffff033333333330f033333333330f033333333330ffffffffffff000000000000000000000000000000000000000000000000000000000
+000000000fffffffffffff033333333300333333333333003333333330fffffffffffff000000000000000000000000000000000000000000000000000000000
+000000000ffffffffffffff0333333330333333333333330333333330ffffffffffffff000000000000000000000000000000000000000000000000000000000
+__map__
+0102070800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0304050600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
