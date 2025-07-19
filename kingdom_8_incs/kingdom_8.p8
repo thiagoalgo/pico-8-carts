@@ -88,21 +88,39 @@ end
 
 function draw_score()
     local bg_col = 7
-    local bg_good_col = 3
-    local bg_bad_col = 8
     local text_col = 0
 
+    local points = 18
+    local bar_size = calc_score_bar_size(5, points)
     rectfill(4, 4, 40, 12, bg_col)
-    rectfill(5, 5, 23, 11, bg_bad_col) -- 39
+    rectfill(5, 5, bar_size, 11, get_bar_color(points))
     print("popular.", 6, 6, text_col)
 
+    points = 50
+    bar_size = calc_score_bar_size(47, points)
     rectfill(46, 4, 82, 12, bg_col)
-    rectfill(47, 5, 76, 11, bg_good_col) -- 81
+    rectfill(47, 5, bar_size, 11, get_bar_color(points))
     print("might", 48, 6, text_col)
 
+    points = 89
+    local bar_size = calc_score_bar_size(89, points)
     rectfill(88, 4, 124, 12, bg_col)
-    rectfill(89, 5, 111, 11, bg_good_col) -- 81
+    rectfill(89, 5, bar_size, 11, get_bar_color(points))
     print("loyalty", 90, 6, text_col)
+end
+
+function calc_score_bar_size(init, points)
+    return init + ceil(34 * points / 100)
+end
+
+function get_bar_color(points)
+    if points < 40 then
+        return 8
+    elseif points > 60 then
+        return 3
+    else
+        return 9
+    end
 end
 
 __gfx__
