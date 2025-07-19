@@ -6,7 +6,8 @@ __lua__
 
 function _init()
     init_scenes()
-    scene = scenes["game_play"] -- DEBUG
+    scene = scenes["game_play"]
+    -- DEBUG
 
     init_advisors()
 end
@@ -22,10 +23,10 @@ end
 
 function init_advisors()
     advisors = {
-        [0]={name="cleric"},
-        [1]={name="general"},
-        [2]={name="sage"},
-        [3]={name="merchant"}
+        [0] = { name = "cleric" },
+        [1] = { name = "general" },
+        [2] = { name = "sage" },
+        [3] = { name = "merchant" }
     }
 end
 
@@ -53,6 +54,7 @@ function _draw()
     cls()
     draw_scene()
     draw_advisors()
+    draw_score()
 end
 
 function draw_scene()
@@ -68,20 +70,39 @@ function draw_scene()
 end
 
 function draw_advisors()
-    local bg_col=0
-    local text_col=7
+    local bg_col = 0
+    local text_col = 7
 
-    rectfill(4,44,28,50,bg_col)
+    rectfill(4, 44, 28, 50, bg_col)
     print(advisors[0]["name"], 5, 45, text_col)
 
-    rectfill(95,44,123,50,bg_col)
+    rectfill(95, 44, 123, 50, bg_col)
     print(advisors[1]["name"], 96, 45, text_col)
 
-    rectfill(4,116,20,122,bg_col)
+    rectfill(4, 116, 20, 122, bg_col)
     print(advisors[2]["name"], 5, 117, text_col)
 
-    rectfill(91,116,123,122,bg_col)
+    rectfill(91, 116, 123, 122, bg_col)
     print(advisors[3]["name"], 92, 117, text_col)
+end
+
+function draw_score()
+    local bg_col = 7
+    local bg_good_col = 3
+    local bg_bad_col = 8
+    local text_col = 0
+
+    rectfill(4, 4, 40, 12, bg_col)
+    rectfill(5, 5, 23, 11, bg_bad_col) -- 39
+    print("popular.", 6, 6, text_col)
+
+    rectfill(46, 4, 82, 12, bg_col)
+    rectfill(47, 5, 76, 11, bg_good_col) -- 81
+    print("might", 48, 6, text_col)
+
+    rectfill(88, 4, 124, 12, bg_col)
+    rectfill(89, 5, 111, 11, bg_good_col) -- 81
+    print("loyalty", 90, 6, text_col)
 end
 
 __gfx__
