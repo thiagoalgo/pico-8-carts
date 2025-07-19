@@ -1,33 +1,46 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
-#include kingdon_8_incs/bg.p8
-#include kingdon_8_incs/events_75.lua
+#include bg.p8
+#include events_75.lua
 
 function _init()
     init_scenes()
     scene = scenes["start_screen"]
-    
 end
 
-function _update()
-    
-end
-
-function _draw()
-    draw_img(img)
-    print(scene, 10, 10, 7)
-    --print(events,10,10,7)
+function init_scenes()
+    scenes = {
+        start_screen = "start_screen",
+        tutorial = "tutorial",
+        game_play = "game_play",
+        game_over = "game_over"
+    }
 end
 
 -->8
-function init_scenes()
-    scenes = {
-        start_screen="start_screen",
-        tutorial="tutorial",
-        game_play="game_play",
-        game_over="game_over",
-    }
+function _update()
+    update_scenes()
+end
+
+function update_scenes()
+    if scene == scenes["start_screen"] then
+        if btnp(4) then
+            scene = scenes["tutorial"]
+        end
+    elseif scene == scenes["tutorial"] then
+        if btnp(4) then
+            scene = scenes["game_play"]
+        end
+    elseif scene == scenes["game_play"] then
+    elseif scene == scenes["game_over"] then
+    end
+end
+
+-->8
+function _draw()
+    cls()
+    draw_scene()
 end
 
 function draw_scene()
@@ -36,7 +49,7 @@ function draw_scene()
     elseif scene == scenes["tutorial"] then
         print("tutorial", 10, 10, 7)
     elseif scene == scenes["game_play"] then
-        print("game_play", 10, 10, 7)
+        draw_img(img)
     elseif scene == scenes["game_over"] then
         print("game_over", 10, 10, 7)
     end
