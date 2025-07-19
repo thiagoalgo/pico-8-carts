@@ -6,7 +6,9 @@ __lua__
 
 function _init()
     init_scenes()
-    scene = scenes["start_screen"]
+    scene = scenes["game_play"] -- DEBUG
+
+    init_advisors()
 end
 
 function init_scenes()
@@ -15,6 +17,15 @@ function init_scenes()
         tutorial = "tutorial",
         game_play = "game_play",
         game_over = "game_over"
+    }
+end
+
+function init_advisors()
+    advisors = {
+        [0]={name="cleric"},
+        [1]={name="general"},
+        [2]={name="sage"},
+        [3]={name="merchant"}
     }
 end
 
@@ -41,6 +52,7 @@ end
 function _draw()
     cls()
     draw_scene()
+    draw_advisors()
 end
 
 function draw_scene()
@@ -53,6 +65,23 @@ function draw_scene()
     elseif scene == scenes["game_over"] then
         print("game_over", 10, 10, 7)
     end
+end
+
+function draw_advisors()
+    local bg_col=0
+    local text_col=7
+
+    rectfill(4,44,28,50,bg_col)
+    print(advisors[0]["name"], 5, 45, text_col)
+
+    rectfill(95,44,123,50,bg_col)
+    print(advisors[1]["name"], 96, 45, text_col)
+
+    rectfill(4,116,20,122,bg_col)
+    print(advisors[2]["name"], 5, 117, text_col)
+
+    rectfill(91,116,123,122,bg_col)
+    print(advisors[3]["name"], 92, 117, text_col)
 end
 
 __gfx__
