@@ -10,8 +10,7 @@ function _init()
     scene_tutorial = {}
     scene_game_over = {}
     init_scenes()
-    -- scene = scenes["start_screen"]
-    scene = scenes["game_over"]
+    scene = scenes["start_screen"]
 
     advisors = {}
     init_advisors()
