@@ -5,13 +5,17 @@ __lua__
 #include events_75.lua
 
 function _init()
-    scenes={}
+    scenes = {}
     init_scenes()
-    scene = scenes["game_play"]
+    scene = scenes["tutorial"]
 
-    advisors={}
-    sel_advisor={}
+    advisors = {}
+    sel_advisor = {}
     init_advisors()
+
+    message = {}
+    btm_message = {}
+    sel_event = {}
 end
 
 function init_scenes()
@@ -48,8 +52,15 @@ function update_scenes()
     elseif scene == scenes["tutorial"] then
         if btnp(4) then
             scene = scenes["game_play"]
+            btm_message.text = "select an advisor and press 🅾️"
+            btm_message.show = true
         end
     elseif scene == scenes["game_play"] then
+        if not message.show then
+            if btnp(4) then
+                
+            end
+        end
     elseif scene == scenes["game_over"] then
     end
 end
@@ -69,6 +80,8 @@ function _draw()
     draw_scene()
     draw_advisors()
     draw_score()
+    draw_message()
+    draw_btm_message()
 end
 
 function draw_scene()
@@ -99,13 +112,13 @@ function draw_advisors()
         end
 
         if (sel_advisor.row == 01 and sel_advisor.col == 0) then
-            rectfill(4, 116, 20, 122, bg_col)
-            print(advisors[2]["name"], 5, 117, text_col)
+            rectfill(4, 100, 20, 106, bg_col)
+            print(advisors[2]["name"], 5, 101, text_col)
         end
 
         if (sel_advisor.row == 1 and sel_advisor.col == 1) then
-            rectfill(91, 116, 123, 122, bg_col)
-            print(advisors[3]["name"], 92, 117, text_col)
+            rectfill(91, 100, 123, 106, bg_col)
+            print(advisors[3]["name"], 92, 101, text_col)
         end
 
         palt(0, false)
@@ -115,11 +128,11 @@ function draw_advisors()
         end
 
         if (sel_advisor.row == 0 and sel_advisor.col == 1) then
-            map(0, 0, 56, 73, 2, 2)   
+            map(0, 0, 56, 73, 2, 2)
         end
 
         if (sel_advisor.row == 01 and sel_advisor.col == 0) then
-            map(2, 0, 56, 95, 2, 2)    
+            map(2, 0, 56, 95, 2, 2)
         end
 
         if (sel_advisor.row == 1 and sel_advisor.col == 1) then
@@ -130,26 +143,28 @@ function draw_advisors()
 end
 
 function draw_score()
-    local bg_col = 7
-    local text_col = 0
+    if scene == scenes["game_play"] then
+        local bg_col = 7
+        local text_col = 0
 
-    local points = 18
-    local bar_size = calc_score_bar_size(5, points)
-    rectfill(4, 4, 40, 12, bg_col)
-    rectfill(5, 5, bar_size, 11, get_bar_color(points))
-    print("popular.", 6, 6, text_col)
+        local points = 18
+        local bar_size = calc_score_bar_size(5, points)
+        rectfill(4, 4, 40, 12, bg_col)
+        rectfill(5, 5, bar_size, 11, get_bar_color(points))
+        print("popular.", 6, 6, text_col)
 
-    points = 1
-    bar_size = calc_score_bar_size(47, points)
-    rectfill(46, 4, 82, 12, bg_col)
-    rectfill(47, 5, bar_size, 11, get_bar_color(points))
-    print("might", 48, 6, text_col)
+        points = 1
+        bar_size = calc_score_bar_size(47, points)
+        rectfill(46, 4, 82, 12, bg_col)
+        rectfill(47, 5, bar_size, 11, get_bar_color(points))
+        print("might", 48, 6, text_col)
 
-    points = 89
-    local bar_size = calc_score_bar_size(89, points)
-    rectfill(88, 4, 124, 12, bg_col)
-    rectfill(89, 5, bar_size, 11, get_bar_color(points))
-    print("loyalty", 90, 6, text_col)
+        points = 89
+        local bar_size = calc_score_bar_size(89, points)
+        rectfill(88, 4, 124, 12, bg_col)
+        rectfill(89, 5, bar_size, 11, get_bar_color(points))
+        print("loyalty", 90, 6, text_col)
+    end
 end
 
 function calc_score_bar_size(init, points)
@@ -163,6 +178,26 @@ function get_bar_color(points)
         return 3
     else
         return 9
+    end
+end
+
+function draw_message()
+    if message.show then
+        local bg_col = 3
+        local text_col = 7
+
+        rectfill(4, 16, 124, 114, bg_col)
+        --print(message.text, 5, 119, text_col)
+    end
+end
+
+function draw_btm_message()
+    if btm_message.show then
+        local bg_col = 4
+        local text_col = 7
+
+        rectfill(4, 118, 124, 124, bg_col)
+        print(btm_message.text, 5, 119, text_col)
     end
 end
 
