@@ -7,12 +7,13 @@ __lua__
 function _init()
     scenes = {}
     init_scenes()
-    scene = scenes["tutorial"]
+    scene = scenes["start_screen"]
 
     advisors = {}
     init_advisors()
 
     message = {}
+    recent_closed_message = false
     btm_message = {}
     sel_event = {}
 
@@ -68,12 +69,13 @@ function update_scenes()
         end
     elseif scene == scenes["game_play"] then
         if not message.show then
-            if btnp(4) then
+            if btnp(4) and not recent_closed_message then
                 i = ceil(rnd(#events))
                 sel_event = events[i]
                 message.show = true
                 btm_message.show = false
             end
+            recent_closed_message = false
         end
     elseif scene == scenes["game_over"] then
     end
@@ -100,17 +102,30 @@ function update_score()
     if scene == scenes["game_play"] then
         if message.show then
             local adv = get_sel_advisor()
-            local effect = {0,0,0}
-            
+            local effect = { 0, 0, 0 }
+
             if btnp(4) then
                 effect = sel_event.effect_a
             elseif btnp(5) then
                 effect = sel_event.effect_b
             end
 
-            score.pop = max(min(score.pop + (adv.pop_wght * effect[1]), 100), 0)
-            score.mig = max(min(score.mig + (adv.mig_wght * effect[2]), 100), 0)
-            score.loy = max(min(score.loy + (adv.loy_wght * effect[3]), 100), 0)
+            if btnp(4) or btnp(5) then
+                score.pop = max(min(score.pop + (adv.pop_wght * effect[1]), 100), 0)
+                score.mig = max(min(score.mig + (adv.mig_wght * effect[2]), 100), 0)
+                score.loy = max(min(score.loy + (adv.loy_wght * effect[3]), 100), 0)
+
+                if score.pop < 1 or score.mig < 1 or score.loy < 1 then
+                    scene = scenes["game_over"]
+                    btm_message.show = false
+                else
+                    btm_message.text = "select an advisor and press 🅾️"
+                    btm_message.show = true
+                end
+
+                message.show = false
+                recent_closed_message = true
+            end
         end
     end
 end
@@ -185,7 +200,7 @@ end
 
 function draw_score()
     if scene == scenes["game_play"] then
-        print(score.pop.." - "..score.mig.." - "..score.loy, 3, 14, 4)
+        print(score.pop .. " - " .. score.mig .. " - " .. score.loy, 3, 14, 4)
         local bg_col = 7
         local text_col = 0
 
