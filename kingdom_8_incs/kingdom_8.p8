@@ -10,7 +10,8 @@ function _init()
     scene_tutorial = {}
     scene_game_over = {}
     init_scenes()
-    scene = scenes["start_screen"]
+    -- scene = scenes["start_screen"]
+    scene = scenes["game_over"]
 
     advisors = {}
     init_advisors()
@@ -61,7 +62,7 @@ function init_scenes()
     scene_game_over = {
         king = {
             y = -48,
-            max_y = 0
+            max_y = 11
         },
         text_x = 3,
         text_y = 58,
@@ -144,18 +145,19 @@ function update_scenes()
         end
     elseif scene == scenes["game_over"] then
         if scene_game_over.king.y <= scene_game_over.king.max_y then
-            scene_game_over.king.y += 2
+            scene_game_over.king.y += 1
         end
 
         if (scene_game_over.king.y >= scene_game_over.king.max_y) then
             btm_message.text = "press 🅾️ to restart"
             btm_message.show = true
+
+            if btnp(4) and not recent_closed_message then
+                _init()
+                scene = scenes["start_screen"]
+            end
         end
 
-        if btnp(4) and not recent_closed_message then
-            _init()
-            scene = scenes["start_screen"]
-        end
         recent_closed_message = false
     end
 end
@@ -247,7 +249,7 @@ function draw_scene()
                 print(scene_game_over.texts[cause][j], scene_game_over.text_x, scene_game_over.text_y + (dy * 8) + space, 7)
                 dy += 1
             end
-            space +=4
+            space += 4
         end
     end
 end
