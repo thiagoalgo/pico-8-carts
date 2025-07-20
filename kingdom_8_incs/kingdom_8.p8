@@ -15,6 +15,9 @@ function _init()
     message = {}
     btm_message = {}
     sel_event = {}
+
+    score = {}
+    init_score()
 end
 
 function init_scenes()
@@ -28,17 +31,26 @@ end
 
 function init_advisors()
     advisors = {
-        [0] = { name = "cleric", row = 0, col = 0 },
-        [1] = { name = "general", row = 0, col = 1 },
-        [2] = { name = "sage", row = 1, col = 0 },
-        [3] = { name = "merchant", row = 1, col = 1 }
+        [0] = { name = "cleric", row = 0, col = 0, pop_wght = 6, mig_wght = 3, loy_wght = 4 },
+        [1] = { name = "general", row = 0, col = 1, pop_wght = 3, mig_wght = 6, loy_wght = 5 },
+        [2] = { name = "sage", row = 1, col = 0, pop_wght = 4, mig_wght = 4, loy_wght = 4 },
+        [3] = { name = "merchant", row = 1, col = 1, pop_wght = 6, mig_wght = 3, loy_wght = 4 }
     }
 
     sel_advisor = { row = 0, col = 0 }
 end
 
+function init_score()
+    score = {
+        pop = 50,
+        mig = 50,
+        loy = 50
+    }
+end
+
 -->8
 function _update()
+    update_score()
     update_scenes()
     update_advisors()
 end
@@ -76,6 +88,33 @@ function update_advisors()
     end
 end
 
+function get_sel_advisor()
+    for i = 0, #advisors do
+        if sel_advisor.row == advisors[i].row and sel_advisor.col == advisors[i].col then
+            return advisors[i]
+        end
+    end
+end
+
+function update_score()
+    if scene == scenes["game_play"] then
+        if message.show then
+            local adv = get_sel_advisor()
+            local effect = {0,0,0}
+            
+            if btnp(4) then
+                effect = sel_event.effect_a
+            elseif btnp(5) then
+                effect = sel_event.effect_b
+            end
+
+            score.pop = max(min(score.pop + (adv.pop_wght * effect[1]), 100), 0)
+            score.mig = max(min(score.mig + (adv.mig_wght * effect[2]), 100), 0)
+            score.loy = max(min(score.loy + (adv.loy_wght * effect[3]), 100), 0)
+        end
+    end
+end
+
 -->8
 function _draw()
     cls()
@@ -100,7 +139,6 @@ end
 
 function draw_advisors()
     if scene == scenes["game_play"] then
-        print(sel_advisor.row, 0, 0, 3)
         local bg_col = 0
         local text_col = 7
 
@@ -147,25 +185,23 @@ end
 
 function draw_score()
     if scene == scenes["game_play"] then
+        print(score.pop.." - "..score.mig.." - "..score.loy, 3, 14, 4)
         local bg_col = 7
         local text_col = 0
 
-        local points = 18
-        local bar_size = calc_score_bar_size(5, points)
+        local bar_size = calc_score_bar_size(5, score.pop)
         rectfill(4, 4, 40, 12, bg_col)
-        rectfill(5, 5, bar_size, 11, get_bar_color(points))
+        rectfill(5, 5, bar_size, 11, get_bar_color(score.pop))
         print("popular.", 6, 6, text_col)
 
-        points = 1
-        bar_size = calc_score_bar_size(47, points)
+        bar_size = calc_score_bar_size(47, score.mig)
         rectfill(46, 4, 82, 12, bg_col)
-        rectfill(47, 5, bar_size, 11, get_bar_color(points))
+        rectfill(47, 5, bar_size, 11, get_bar_color(score.mig))
         print("might", 48, 6, text_col)
 
-        points = 89
-        local bar_size = calc_score_bar_size(89, points)
+        local bar_size = calc_score_bar_size(89, score.loy)
         rectfill(88, 4, 124, 12, bg_col)
-        rectfill(89, 5, bar_size, 11, get_bar_color(points))
+        rectfill(89, 5, bar_size, 11, get_bar_color(score.loy))
         print("loyalty", 90, 6, text_col)
     end
 end
@@ -196,15 +232,15 @@ function draw_message()
 
         print(sel_event.text, 1, 25, title_col)
 
-        for i=1, #sel_event.counsel do
-            y = 29 + (i*9)
+        for i = 1, #sel_event.counsel do
+            y = 29 + (i * 9)
             print(sel_event.counsel[i], 1, y, text_col)
         end
 
         rectfill(0, 94, 128, 94, line_col)
 
-        local opt_a = "🅾️ "..sel_event.opt_a
-        local opt_b = "❎ "..sel_event.opt_b
+        local opt_a = "🅾️ " .. sel_event.opt_a
+        local opt_b = "❎ " .. sel_event.opt_b
         print(opt_a, 1, 99, text_col)
         print(opt_b, 1, 109, text_col)
 
@@ -217,7 +253,7 @@ function draw_btm_message()
         local bg_col = 0
         local line_col = 5
         local text_col = 7
-        
+
         rectfill(0, 117, 128, 118, line_col)
         rectfill(0, 118, 128, 128, bg_col)
         print(btm_message.text, 1, 121, text_col)
