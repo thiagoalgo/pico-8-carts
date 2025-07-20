@@ -2,7 +2,7 @@ pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
 #include bg.p8
-#include events_75.lua
+#include events_75_lower.lua
 
 function _init()
     scenes = {}
@@ -43,9 +43,9 @@ end
 
 function init_score()
     score = {
-        pop = 50,
-        mig = 50,
-        loy = 50
+        pop = 35 + flr(rnd(30)),
+        mig = 35 + flr(rnd(30)),
+        loy = 35 + flr(rnd(30)),
     }
 end
 
