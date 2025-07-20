@@ -10,7 +10,6 @@ function _init()
     scene = scenes["tutorial"]
 
     advisors = {}
-    sel_advisor = {}
     init_advisors()
 
     message = {}
@@ -61,6 +60,7 @@ function update_scenes()
                 i = ceil(rnd(#events))
                 sel_event = events[i]
                 message.show = true
+                btm_message.show = false
             end
         end
     elseif scene == scenes["game_over"] then
@@ -81,9 +81,9 @@ function _draw()
     cls()
     draw_scene()
     draw_advisors()
-    draw_score()
     draw_message()
     draw_btm_message()
+    draw_score()
 end
 
 function draw_scene()
@@ -100,6 +100,7 @@ end
 
 function draw_advisors()
     if scene == scenes["game_play"] then
+        print(sel_advisor.row, 0, 0, 3)
         local bg_col = 0
         local text_col = 7
 
@@ -186,16 +187,26 @@ end
 function draw_message()
     if message.show then
         local bg_col = 0
+        local line_col = 5
         local title_col = 10
         local text_col = 7
 
-        rectfill(0, 16, 128, 116, bg_col)
-        print(sel_event.text, 1, 21, title_col)
+        rectfill(0, 0, 128, 128, bg_col)
+        rectfill(0, 19, 128, 19, line_col)
+
+        print(sel_event.text, 1, 25, title_col)
 
         for i=1, #sel_event.counsel do
-            y = 24 + (i*10)
+            y = 29 + (i*9)
             print(sel_event.counsel[i], 1, y, text_col)
         end
+
+        rectfill(0, 94, 128, 94, line_col)
+
+        local opt_a = "🅾️ "..sel_event.opt_a
+        local opt_b = "❎ "..sel_event.opt_b
+        print(opt_a, 1, 99, text_col)
+        print(opt_b, 1, 109, text_col)
 
         --counsel
     end
@@ -204,9 +215,10 @@ end
 function draw_btm_message()
     if btm_message.show then
         local bg_col = 0
+        local line_col = 5
         local text_col = 7
         
-        rectfill(0, 117, 128, 118, 5)
+        rectfill(0, 117, 128, 118, line_col)
         rectfill(0, 118, 128, 128, bg_col)
         print(btm_message.text, 1, 121, text_col)
     end
