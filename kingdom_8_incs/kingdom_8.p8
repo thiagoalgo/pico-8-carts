@@ -200,7 +200,6 @@ end
 
 function draw_score()
     if scene == scenes["game_play"] then
-        print(score.pop .. " - " .. score.mig .. " - " .. score.loy, 3, 14, 4)
         local bg_col = 7
         local text_col = 0
 
