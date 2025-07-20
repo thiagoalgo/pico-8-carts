@@ -6,6 +6,8 @@ __lua__
 
 function _init()
     scenes = {}
+    scene_start_screen = {}
+    scene_tutorial = {}
     init_scenes()
     scene = scenes["start_screen"]
 
@@ -28,6 +30,32 @@ function init_scenes()
         game_play = "game_play",
         game_over = "game_over"
     }
+
+    scene_start_screen = {
+        king = {
+            y = -48,
+            max_y = 22
+        }
+    }
+
+    scene_tutorial = {
+        text_x = 3,
+        text_y = 13,
+        texts = {
+            "you are the new crowned king",
+            "your realm hangs by a thread",
+            "three forces must stay in check",
+            "popularity, might, loyalty",
+            "each turn, choose one advisor",
+            "read their advice carefully",
+            "make one decision per round",
+            "your choices shift the balance",
+            "if one stat hits zero: you fall",
+            "survive to build your legacy",
+            "rule wisely, or be dethroned",
+            "the kingdom awaits your will"
+        }
+    }
 end
 
 function init_advisors()
@@ -45,7 +73,7 @@ function init_score()
     score = {
         pop = 35 + flr(rnd(30)),
         mig = 35 + flr(rnd(30)),
-        loy = 35 + flr(rnd(30)),
+        loy = 35 + flr(rnd(30))
     }
 end
 
@@ -58,10 +86,22 @@ end
 
 function update_scenes()
     if scene == scenes["start_screen"] then
+        if scene_start_screen.king.y <= scene_start_screen.king.max_y then
+            scene_start_screen.king.y += 2
+        end
+
+        if (scene_start_screen.king.y >= scene_start_screen.king.max_y) then
+            btm_message.text = "press 🅾️ to tutorial"
+            btm_message.show = true
+        end
+
         if btnp(4) then
             scene = scenes["tutorial"]
         end
     elseif scene == scenes["tutorial"] then
+        btm_message.text = "press 🅾️ to start"
+        btm_message.show = true
+
         if btnp(4) then
             scene = scenes["game_play"]
             btm_message.text = "select an advisor and press 🅾️"
@@ -142,9 +182,14 @@ end
 
 function draw_scene()
     if scene == scenes["start_screen"] then
-        print("start screen", 10, 10, 7)
+        map(4, 0, 40, scene_start_screen.king.y, 6, 6)
+        --print("kingdom  8", 46, 76, 6)
+        print("kingdom  8", 45, 75, 7)
     elseif scene == scenes["tutorial"] then
         print("tutorial", 10, 10, 7)
+        for i = 1, #scene_tutorial.texts do
+            print(scene_tutorial.texts[i], scene_tutorial.text_x, scene_tutorial.text_y + i * 8)
+        end
     elseif scene == scenes["game_play"] then
         draw_img(img)
     elseif scene == scenes["game_over"] then
