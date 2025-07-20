@@ -58,7 +58,9 @@ function update_scenes()
     elseif scene == scenes["game_play"] then
         if not message.show then
             if btnp(4) then
-                
+                i = ceil(rnd(#events))
+                sel_event = events[i]
+                message.show = true
             end
         end
     elseif scene == scenes["game_over"] then
@@ -183,21 +185,30 @@ end
 
 function draw_message()
     if message.show then
-        local bg_col = 3
+        local bg_col = 0
+        local title_col = 10
         local text_col = 7
 
-        rectfill(4, 16, 124, 114, bg_col)
-        --print(message.text, 5, 119, text_col)
+        rectfill(0, 16, 128, 116, bg_col)
+        print(sel_event.text, 1, 21, title_col)
+
+        for i=1, #sel_event.counsel do
+            y = 24 + (i*10)
+            print(sel_event.counsel[i], 1, y, text_col)
+        end
+
+        --counsel
     end
 end
 
 function draw_btm_message()
     if btm_message.show then
-        local bg_col = 4
+        local bg_col = 0
         local text_col = 7
-
-        rectfill(4, 118, 124, 124, bg_col)
-        print(btm_message.text, 5, 119, text_col)
+        
+        rectfill(0, 117, 128, 118, 5)
+        rectfill(0, 118, 128, 128, bg_col)
+        print(btm_message.text, 1, 121, text_col)
     end
 end
 
