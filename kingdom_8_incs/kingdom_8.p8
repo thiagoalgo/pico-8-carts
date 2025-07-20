@@ -10,7 +10,7 @@ function _init()
     scene_tutorial = {}
     scene_game_over = {}
     init_scenes()
-    scene = scenes["game_over"]
+    scene = scenes["start_screen"]
 
     advisors = {}
     init_advisors()
@@ -61,8 +61,25 @@ function init_scenes()
     scene_game_over = {
         king = {
             y = -48,
-            max_y = 22
-        }
+            max_y = 0
+        },
+        text_x = 3,
+        text_y = 58,
+        texts = {
+            pop = {
+                "the people rose in anger",
+                "the crown was torn from grace"
+            },
+            mig = {
+                "invaders stormed the kingdom",
+                "the king fell without command"
+            },
+            loy = {
+                "betrayed by trusted voices",
+                "the blade met silent flesh"
+            }
+        },
+        death_causes = {}
     }
 end
 
@@ -95,7 +112,7 @@ end
 function update_scenes()
     if scene == scenes["start_screen"] then
         if scene_start_screen.king.y <= scene_start_screen.king.max_y then
-            scene_start_screen.king.y += 2
+            scene_start_screen.king.y += 3
         end
 
         if (scene_start_screen.king.y >= scene_start_screen.king.max_y) then
@@ -178,6 +195,9 @@ function update_score()
                 score.loy = max(min(score.loy + (adv.loy_wght * effect[3]), 100), 0)
 
                 if score.pop < 1 or score.mig < 1 or score.loy < 1 then
+                    if score.pop < 1 then add(scene_game_over.death_causes, "pop") end
+                    if score.mig < 1 then add(scene_game_over.death_causes, "mig") end
+                    if score.loy < 1 then add(scene_game_over.death_causes, "loy") end
                     scene = scenes["game_over"]
                     btm_message.show = false
                 else
@@ -217,7 +237,18 @@ function draw_scene()
         draw_img(img)
     elseif scene == scenes["game_over"] then
         map(10, 0, 40, scene_game_over.king.y, 6, 4)
-        print("game_over", 10, 10, 7)
+        print("game_over", 48, 42, 7)
+
+        local dy = 0
+        local space = 0
+        for i = 1, #scene_game_over.death_causes do
+            local cause = scene_game_over.death_causes[i]
+            for j = 1, #scene_game_over.texts[cause] do
+                print(scene_game_over.texts[cause][j], scene_game_over.text_x, scene_game_over.text_y + (dy * 8) + space, 7)
+                dy += 1
+            end
+            space +=4
+        end
     end
 end
 
