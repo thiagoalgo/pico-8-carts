@@ -85,10 +85,10 @@ end
 
 function init_advisors()
     advisors = {
-        [0] = { name = "cleric", row = 0, col = 0, pop_wght = 6, mig_wght = 3, loy_wght = 4 },
-        [1] = { name = "general", row = 0, col = 1, pop_wght = 3, mig_wght = 6, loy_wght = 5 },
-        [2] = { name = "sage", row = 1, col = 0, pop_wght = 4, mig_wght = 4, loy_wght = 4 },
-        [3] = { name = "merchant", row = 1, col = 1, pop_wght = 6, mig_wght = 3, loy_wght = 4 }
+        [0] = { name = "cleric", row = 0, col = 0, pop_wght = 8, mig_wght = 6, loy_wght = 7 },
+        [1] = { name = "general", row = 0, col = 1, pop_wght = 6, mig_wght = 8, loy_wght = 7 },
+        [2] = { name = "sage", row = 1, col = 0, pop_wght = 7, mig_wght = 7, loy_wght = 7 },
+        [3] = { name = "merchant", row = 1, col = 1, pop_wght = 8, mig_wght = 6, loy_wght = 7 }
     }
 
     sel_advisor = { row = 0, col = 0 }
