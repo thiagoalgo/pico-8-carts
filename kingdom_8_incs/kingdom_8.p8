@@ -63,10 +63,10 @@ function init_scenes()
     scene_game_over = {
         king = {
             y = -48,
-            max_y = 11
+            max_y = 3
         },
-        text_x = 3,
-        text_y = 58,
+        text_x = 0,
+        text_y = 63,
         texts = {
             pop = {
                 "the people rose in anger",
@@ -100,7 +100,8 @@ function init_score()
     score = {
         pop = 35 + flr(rnd(30)),
         mig = 35 + flr(rnd(30)),
-        loy = 35 + flr(rnd(30))
+        loy = 35 + flr(rnd(30)),
+        turn = 0
     }
 end
 
@@ -213,6 +214,7 @@ function update_score()
                 else
                     btm_message.text = "select an advisor and press 🅾️"
                     btm_message.show = true
+                    score.turn += 1
                 end
 
                 message.show = false
@@ -247,17 +249,21 @@ function draw_scene()
         draw_img(img)
     elseif scene == scenes["game_over"] then
         map(10, 0, 40, scene_game_over.king.y, 6, 4)
-        print("game_over", 48, 42, 7)
 
-        local dy = 0
-        local space = 0
-        for i = 1, #scene_game_over.death_causes do
-            local cause = scene_game_over.death_causes[i]
-            for j = 1, #scene_game_over.texts[cause] do
-                print(scene_game_over.texts[cause][j], scene_game_over.text_x, scene_game_over.text_y + (dy * 8) + space, 7)
-                dy += 1
+            if (scene_game_over.king.y >= scene_game_over.king.max_y) then
+            print("game over", 48, 41, 8)
+            print("you survivor to "..score.turn.." turns", 0, 52, 10)
+            scene_game_over.death_causes = {"pop", "mig", "loy"}
+            local dy = 0
+            local space = 0
+            for i = 1, #scene_game_over.death_causes do
+                local cause = scene_game_over.death_causes[i]
+                for j = 1, #scene_game_over.texts[cause] do
+                    print(scene_game_over.texts[cause][j], scene_game_over.text_x, scene_game_over.text_y + (dy * 8) + space, 7)
+                    dy += 1
+                end
+                space += 3
             end
-            space += 4
         end
     end
 end
