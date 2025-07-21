@@ -65,7 +65,7 @@ function init_scenes()
             y = -48,
             max_y = 3
         },
-        text_x = 0,
+        text_x = 1,
         text_y = 63,
         texts = {
             pop = {
@@ -249,11 +249,9 @@ function draw_scene()
         draw_img(img)
     elseif scene == scenes["game_over"] then
         map(10, 0, 40, scene_game_over.king.y, 6, 4)
-
-            if (scene_game_over.king.y >= scene_game_over.king.max_y) then
+        if (scene_game_over.king.y >= scene_game_over.king.max_y) then
             print("game over", 48, 41, 8)
-            print("you survivor to "..score.turn.." turns", 0, 52, 10)
-            scene_game_over.death_causes = {"pop", "mig", "loy"}
+            print("you survivor to "..score.turn.." turns", 1, 52, 10)
             local dy = 0
             local space = 0
             for i = 1, #scene_game_over.death_causes do
