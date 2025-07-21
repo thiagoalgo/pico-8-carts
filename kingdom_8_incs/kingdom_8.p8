@@ -1,6 +1,8 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
+--kingdom 8
+--by thiagoalgo
 #include bg.p8
 #include events_75_lower.lua
 
